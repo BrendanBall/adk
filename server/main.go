@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	http.ServeTest()
+	http.Serve()
 }

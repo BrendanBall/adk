@@ -6,7 +6,7 @@ import (
 	"github.com/go-chi/chi"
 )
 
-func ServeTest() {
+func Serve() {
 	r := chi.NewRouter()
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Hello world"))
