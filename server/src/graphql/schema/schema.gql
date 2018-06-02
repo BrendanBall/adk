@@ -1,3 +1,17 @@
 type Query {
-    testQuery: String
+    tasks: [Task!]!
+}
+
+type Task {
+    id: ID!
+    title: String
+    description: String
+    createdBy: User!
+    assignedTo: User
+}
+
+type User {
+    id: ID!
+    username: String
+    name: String
 }

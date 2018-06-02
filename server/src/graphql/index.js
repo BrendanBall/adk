@@ -3,8 +3,9 @@ import typeDefs from './schema'
 import rootResolver from './resolvers'
 
 export default function schema () {
-  return makeExecutableSchema({
+  let schema = makeExecutableSchema({
     typeDefs: typeDefs,
     resolvers: rootResolver()
   })
+  return schema
 }
