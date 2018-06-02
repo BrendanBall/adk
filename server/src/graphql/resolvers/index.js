@@ -6,8 +6,17 @@ export default function rootResolver () {
   return {
     Query: {
       tasks: async (obj, args, {loaders: { users }}, info) => {
-        let results = await Task.query()
-        return results.map(t => ({...t, createdBy: users.load(t.createdByUserId)}))
+        return Task.query()
+      }
+    },
+    Mutation: {
+      createTask: async (obj, { input }, {loaders: { users }}, info) => {
+        return Task.query().insert(input)
+      }
+    },
+    Task: {
+      createdBy: async ({ createdByUserId }, args, {loaders: { users }}, info) => {
+        return users.load(createdByUserId)
       }
     }
   }

@@ -10,8 +10,18 @@ type Task {
     assignedTo: User
 }
 
+input TaskInput {
+    title: String!
+    description: String!
+    createdByUserId: ID!
+}
+
 type User {
     id: ID!
     username: String
     name: String
+}
+
+type Mutation {
+    createTask(input: TaskInput): Task
 }
