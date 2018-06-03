@@ -22,6 +22,16 @@ type User {
     name: String
 }
 
+input UserInput {
+    username: String
+    name: String
+}
+
 type Mutation {
-    createTask(input: TaskInput): Task
+    createTask(input: TaskInput!): Task
+    updateUser(id: ID!, input: UserInput!): User
+}
+
+type Subscription {
+    taskCreated: Task
 }
