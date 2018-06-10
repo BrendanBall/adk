@@ -1,13 +1,10 @@
 import Task from '../../models/task'
 import User from '../../models/user'
 import DataLoader from 'dataloader'
-import { PubSub } from 'graphql-subscriptions'
-
-export const pubsub = new PubSub()
 
 const TASK_CREATED_TOPIC = 'task_created'
 
-export default function rootResolver () {
+export default function rootResolver (nats, pubsub) {
   return {
     Query: {
       tasks: async (obj, args, {loaders: { users }}, info) => {
