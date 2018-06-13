@@ -6,14 +6,12 @@ import createSchema from './graphql'
 import { createLoaders } from './graphql/resolvers'
 import Knex from 'knex'
 import knexConfig from '../knexfile'
-import { Model } from 'objection'
 import { SubscriptionServer } from 'subscriptions-transport-ws'
 import { execute, subscribe } from 'graphql'
 import { createServer } from 'http'
 const expressPlayground = require('graphql-playground-middleware-express').default
 
 const knex = Knex(knexConfig.development)
-Model.knex(knex)
 
 const schema = createSchema()
 
@@ -28,7 +26,7 @@ app.get('/graphql/playground', expressPlayground(
     endpoint: 'graphql',
     subscriptionEndpoint: `ws://localhost:${PORT}/subscriptions`
   }), (req, res) => { })
-app.use('/graphql', express.json(), graphqlExpress(req => ({ debug: true, schema, context: { loaders: createLoaders(true) } })))
+app.use('/graphql', express.json(), graphqlExpress(req => ({ debug: true, schema, context: { loaders: createLoaders(knex, true), knex } })))
 
 function onOperation (message, params, webSocket) {
   console.log('onOperation params: ', params)

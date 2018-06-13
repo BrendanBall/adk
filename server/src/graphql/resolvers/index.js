@@ -10,18 +10,18 @@ const TASK_CREATED_TOPIC = 'task_created'
 export default function rootResolver () {
   return {
     Query: {
-      tasks: async (obj, args, {loaders: { users }}, info) => {
-        return Task.query()
+      tasks: async (obj, args, { knex }, info) => {
+        return Task.query(knex)
       }
     },
     Mutation: {
-      createTask: async (obj, { input }, { loaders: { users } }, info) => {
+      createTask: async (obj, { input }, ctx, info) => {
         let task = await Task.query().insert(input)
         pubsub.publish(TASK_CREATED_TOPIC, task)
         return task
       },
-      updateUser: async (obj, { id, input }, ctx, info) => {
-        return User.query().patchAndFetchById(id, input)
+      updateUser: async (obj, { id, input }, { knex }, info) => {
+        return User.query(knex).patchAndFetchById(id, input)
       }
     },
     Subscription: {
@@ -43,12 +43,12 @@ export default function rootResolver () {
   }
 }
 
-async function userResolver (userIds) {
-  return User.query().whereIn('id', userIds)
+async function userResolver (knex, userIds) {
+  return User.query(knex).whereIn('id', userIds)
 }
 
-export function createLoaders (enableCache) {
+export function createLoaders (knex, enableCache) {
   return {
-    users: new DataLoader(ids => userResolver(ids), {cache: enableCache})
+    users: new DataLoader(ids => userResolver(knex, ids), {cache: enableCache})
   }
 }
