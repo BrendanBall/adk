@@ -15,8 +15,8 @@ export default function rootResolver () {
       }
     },
     Mutation: {
-      createTask: async (obj, { input }, ctx, info) => {
-        let task = await Task.query().insert(input)
+      createTask: async (obj, { input }, { knex }, info) => {
+        let task = await Task.query(knex).insert(input)
         pubsub.publish(TASK_CREATED_TOPIC, task)
         return task
       },

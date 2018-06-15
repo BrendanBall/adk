@@ -2,6 +2,12 @@
 
 module.exports = {
 
+  testing: {
+    client: 'sqlite3',
+    connection: ':memory:',
+    useNullAsDefault: true
+  },
+
   development: {
     client: 'sqlite3',
     connection: {
@@ -42,4 +48,4 @@ module.exports = {
     }
   }
 
-};
+}
