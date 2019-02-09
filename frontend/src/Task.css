@@ -1,0 +1,6 @@
+.Task {
+    height: 10rem;
+    background-color: blue;
+    position: relative;
+    cursor: move;
+}
