@@ -1,15 +1,22 @@
 import React from 'react'
 import { DropTarget } from 'react-dnd'
 import './Stage.css'
-import Task from './Task'
+import Card from './Card'
 import { ItemTypes } from './constants'
 
-function Stage ({ stage, tasks = [], connectDropTarget }) {
+function Stage ({ stage, ctx, connectDropTarget }) {
   return connectDropTarget(
     <div className='Stage'>
-      <h3>Stage {stage}</h3>
+      <h3>{stage.title}</h3>
       <div>
-        {tasks.map(t => <Task key={t.id} task={t}></Task>)}
+        {
+          Object.values(stage.cards).map(c =>
+            <Card
+              key={c.id}
+              ctx={{ ...ctx, stageId: stage.id }}
+              card={c}>
+            </Card>)
+        }
       </div>
     </div>
   )
@@ -17,7 +24,7 @@ function Stage ({ stage, tasks = [], connectDropTarget }) {
 
 const stageTarget = {
   drop (props, monitor) {
-    props.moveTask(monitor.getItem().id, props.stage)
+    props.moveCard(monitor.getItem(), { swimlaneId: props.ctx.swimlaneId, stageId: props.stage.id })
   }
 }
 

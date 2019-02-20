@@ -1,19 +1,19 @@
 import React from 'react'
 import { DragSource } from 'react-dnd'
-import './Task.css'
+import './Card.css'
 import { ItemTypes } from './constants'
 
-function Task ({ task, connectDragSource, isDragging }) {
+function Card ({ card, connectDragSource, isDragging }) {
   return connectDragSource(
-    <div className='Task' style={{ opacity: isDragging ? 0.5 : 1 }}>
-      <h3>{task.title}</h3>
+    <div className='Card' style={{ opacity: isDragging ? 0.5 : 1 }}>
+      <h3>{card.title}</h3>
     </div>
   )
 }
 
-const taskSource = {
+const cardSource = {
   beginDrag (props) {
-    return { id: props.task.id }
+    return { card: props.card, ctx: props.ctx }
   }
 }
 
@@ -24,4 +24,4 @@ function collect (connect, monitor) {
   }
 }
 
-export default DragSource(ItemTypes.CARD, taskSource, collect)(Task)
+export default DragSource(ItemTypes.CARD, cardSource, collect)(Card)

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ramda": "^0.26.1",
     "react": "16.8.0-alpha.1",
     "react-dnd": "^7.0.2",
     "react-dnd-html5-backend": "^7.0.2",

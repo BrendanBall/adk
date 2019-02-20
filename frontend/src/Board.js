@@ -1,16 +1,39 @@
 import React, { useState } from 'react'
-
-import Stage from './Stage'
+import { indexBy, prop } from 'ramda'
 import './Board.css'
+import { board as newBoard } from './data'
+import { Swimlane } from './Swimlane'
+
+const byId = prop('id')
+const indexBoard = board => ({
+  ...board,
+  swimlanes: indexBy(byId, board.swimlanes
+    .map(sl => ({ ...sl,
+      stages: indexBy(byId, sl.stages
+        .map(st => ({ ...st, cards: indexBy(byId, st.cards)
+        })))
+    })))
+})
+const indexedBoard = indexBoard(newBoard)
 
 export default function Board () {
-  const [tasks, setTasks] = useState({ a: { id: 'a', title: 'Thing1', stage: 1 } })
-  const moveTask = (id, stage) => setTasks({ ...tasks, [id]: { ...tasks[id], stage } })
+  const [board, setBoard] = useState(indexedBoard)
+  const moveCard = (source, target) => {
+    board.swimlanes[target.swimlaneId].stages[target.stageId].cards[source.card.id] = source.card
+    delete board.swimlanes[source.ctx.swimlaneId].stages[source.ctx.stageId].cards[source.card.id]
+    setBoard(board)
+  }
 
   return (
     <div className='Board'>
-      <Stage key={1} tasks={Object.values(tasks).filter(t => t.stage === 1)} stage={1} moveTask={moveTask}></Stage>
-      <Stage key={2} tasks={Object.values(tasks).filter(t => t.stage === 2)} stage={2} moveTask={moveTask}></Stage>
+      {
+        Object.values(board.swimlanes).map(sl =>
+          <Swimlane
+            key={sl.id}
+            swimlane={sl}
+            moveCard={moveCard}>
+          </Swimlane>)
+      }
     </div>
   )
 }
