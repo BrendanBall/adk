@@ -35,6 +35,27 @@ export const board = {
           ]
         }
       ]
+    },
+    {
+      id: 'sl2',
+      title: 'Background',
+      stages: [
+        {
+          id: 'st1',
+          title: 'Committed',
+          cards: [
+            {
+              id: 'c5',
+              title: 'Do thing 5'
+            }
+          ]
+        },
+        {
+          id: 'st2',
+          title: 'WIP',
+          cards: []
+        }
+      ]
     }
   ]
 }
